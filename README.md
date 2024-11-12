@@ -27,7 +27,7 @@
 - Nodemon for live server reload using development
 - Frontend built with React and React Router
 
-# Technology Used
+# Technologies Used
 - MongoDB - NoSQL database for storing user data and tasks
 - Express - Backend web framework for building REST APIs
 - React - Frontend library for creating user interface
