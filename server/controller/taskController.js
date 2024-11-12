@@ -21,20 +21,50 @@ exports.createTask = async (req, res) => {
 }
 
 // Search for tasks
-exports.searchTasks = async (req, res) => {
+// exports.searchTasks = async (req, res) => {
+//     const { search } = req.query;
+//     try {
+//         const tasks = await Task.find({
+//             $or: [
+//                 { title: { $regex: search, $options: 'i' } },
+//                 { description: { $regex: search, $options: 'i' } },
+//             ],
+//         });
+//         res.json(tasks);
+//     } catch (error) {
+//         res.status(500).json({ error: 'An error occurred while searching for tasks' });
+//     }
+// };
+
+exports.searchTasks = async(req , res) => {
     const { search } = req.query;
-    try {
-        const tasks = await Task.find({
-            $or: [
-                { title: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } },
-            ],
-        });
-        res.json(tasks);
-    } catch (error) {
-        res.status(500).json({ error: 'An error occurred while searching for tasks' });
+    // validate search query
+    if(!search || search.trim() == ''){
+        return res.status(400).json({error: 'search query is required'});
     }
-};
+
+    try{
+        const tasks = await Task.find({
+            $or:[
+                { title: {$regex : search, $options:'i'}},
+                { description: {$regex : search, $options:'i'}}
+                
+
+            ],
+            }).exec(); //Added exec for better error handling with mongoose queries
+
+            if(tasks.length == 0){
+                return res.status(404).json({ message : 'No tasks found'});
+            }
+            res.json(tasks);
+        
+    }
+    catch(error){
+        console.log("Error fetching tasks: ", error);
+        res.status(500).json({ error : 'An error occured while searching for tasks'});
+    }
+}
+
 
 exports.updateTaskState = async (req, res) => {
     try {
@@ -119,23 +149,31 @@ exports.getTaskById = async (req, res) => {
 }
 
 exports.updateTaskById = async (req, res) => {
+    const taskId = req.params.taskId;
+    const updatedData = req.body;
+
     try {
-        var taskId = req.params.taskId;
-        var updatedData = req.body;
+        // Check if taskId is provided
+        if (!taskId) {
+            return res.status(400).json({ error: 'Task ID is required' });
+        }
+
+        // Attempt to update the task
         const updatedTask = await Task.findOneAndUpdate(
             { _id: taskId },
             updatedData,
-            { new: true }
+            { new: true, runValidators: true } // `new: true` returns the updated document, `runValidators: true` validates updated data
         );
 
+        // If no task was found, send a 404 response
         if (!updatedTask) {
-            // Task not found
-            return null;
+            return res.status(404).json({ error: 'Task not found' });
         }
 
+        // Return the updated task
         return res.json(updatedTask);
     } catch (error) {
-        // Handle error
-        throw error;
+        console.error("Error updating task:", error);
+        return res.status(500).json({ error: 'An error occurred while updating the task' });
     }
-}
+};
