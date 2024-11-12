@@ -1,14 +1,16 @@
 # ToDo App
-Table of Contents
-Introduction
-Features
-Technologies Used
-Installation
-Usage
-API Endpoints
-Project Structure
-Contributing
-License
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Installation](#installation)
+5. [Usage](#usage)
+6. [API Endpoints](#api-endpoints)
+7. [Project Structure](#project-structure)
+8. [Contributing](#contributing)
+9. [License](#license)
+
 
 # Introduction
 - Adding new tasks
