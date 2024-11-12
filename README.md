@@ -6,9 +6,8 @@
 3. [Technologies Used](#technologies-used)
 4. [Installation](#installation)
 5. [API Endpoints](#api-endpoints)
-6. [Project Structure](#project-structure)
-7. [Contributing](#contributing)
-8. [License](#license)
+6. [Contributing](#contributing)
+7. [License](#license)
 
 
 # Introduction
