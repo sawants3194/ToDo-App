@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { API } from '../Backend';
 
 const TaskAdd = () => {
     const location = useLocation();
@@ -23,7 +24,7 @@ const TaskAdd = () => {
         };
         const userId = localStorage.getItem('userId');
         // Pass the new task to the parent component
-        fetch(`http://localhost:8000/api/v1/task/create/${userId}`, {
+        fetch(`${API}/task/create/${userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
+import { API } from '../Backend';
 
 const EditTask = () => {
     const location = useLocation();
@@ -17,7 +18,7 @@ const EditTask = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/v1/task/getById/${taskId}`);
+                const response = await axios.get(`${API}/task/getById/${taskId}`);
                 setTitle(response.data.task.title);
                 setDescription(response.data.task.description);
                 setState(response.data.task.state);
@@ -36,7 +37,7 @@ const EditTask = () => {
     const handleUpdate = async () => {
 
         try {
-            const response = await axios.put(`http://localhost:8000/api/v1/task/update/${taskId}`, updatedData);
+            const response = await axios.put(`${API}/task/update/${taskId}`, updatedData);
 
             if (response.status === 200) {
                 //we will do it later

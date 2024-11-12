@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import { API } from '../Backend';
 
 const TaskDetails = () => {
     const location = useLocation();
@@ -15,7 +16,7 @@ const TaskDetails = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/v1/task/getById/${taskId}`);
+                const response = await axios.get(  `${API}/task/getById/${taskId}`);
                 setTasks(response.data.task);
             } catch (error) {
                 console.error('Failed to fetch tasks:', error);
@@ -38,7 +39,7 @@ const TaskDetails = () => {
     };
     const handleDeleteTask = async () => {
         try {
-            const response = await axios.delete(`http://localhost:8000/api/v1/task/delete/${taskId}`);
+            const response = await axios.delete(`${API}/task/delete/${taskId}`);
 
             if (response.status === 200) {
                 // Show a success message to the user

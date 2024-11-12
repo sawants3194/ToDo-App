@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
+import { API } from "../Backend"
 
 const TaskScreen = () => {
     const location = useLocation();
@@ -11,7 +12,7 @@ const TaskScreen = () => {
     const userId = searchParams.get('userId') || localStorage.getItem('userId');
     const [tasks, setTasks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-
+    const [allTasks, setAllTasks] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -21,8 +22,8 @@ const TaskScreen = () => {
             const userId = localStorage.getItem('userId');
 
             try {
-                const response = await axios.get(`http://localhost:8000/api/v1/task/getAll/${userId}?page=${page}`);
-                console.log(response.data)
+                const response = await axios.get(`${API}/task/getAll/${userId}?page=${page}`);
+                setAllTasks(response.data.tasks);
                 setTotalPages(response.data.totalPages)
                 setTasks(response.data.tasks);
 
@@ -36,21 +37,24 @@ const TaskScreen = () => {
     }, [userId, page]);
 
     const applyFilter = (filterValue, tasks) => {
-        let filteredTasks = [];
-        if (filterValue === 'all') {
-            filteredTasks = tasks;
-        } else if (filterValue === 'active') {
+        let filteredTasks = tasks;
+
+        if (filterValue === 'active') {
             filteredTasks = tasks.filter(task => task.state === 'active');
         } else if (filterValue === 'completed') {
             filteredTasks = tasks.filter(task => task.state === 'completed');
+        } else if (filterValue === 'all') {
+            filteredTasks = tasks;  // Show all tasks when filter is 'all'
         }
+
         setTasks(filteredTasks);
     };
+
 
     const handleFilterChange = e => {
         const filterValue = e.target.value;
         setFilter(filterValue);
-        applyFilter(filterValue, tasks);
+        applyFilter(filterValue, allTasks);
     };
     const handlePreviousPage = () => {
         setPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -60,6 +64,7 @@ const TaskScreen = () => {
         setPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
     const handleSearch = (e) => {
+        const searchTerm = e.target.value;
         setSearchTerm(e.target.value);
 
         const filteredTasks = tasks.filter((task) => {
@@ -69,19 +74,39 @@ const TaskScreen = () => {
         }
         )
 
-        setTasks(filteredTasks)
+        applyFilter(filter, filteredTasks);
     };
-
 
 
     const handleTaskCompletionToggle = async (taskId) => {
-
-
+        const updatedTasks = tasks.map((task) => {
+            if (task._id === taskId) {
+                const updatedTask = { ...task, state: task.state === 'completed' ? 'active' : 'completed' };
+                // Update task in backend
+                axios.patch(`${API}/task/update/${taskId}`, { state: updatedTask.state })
+                    .then((response) => {
+                        console.log('Task updated:', response.data);
+                    })
+                    .catch((error) => {
+                        console.error('Error updating task:', error);
+                    });
+                return updatedTask;
+            }
+            return task;
+        });
+        setTasks(updatedTasks);
     };
 
-    const handleBulkRemoveCompleted = () => {
-        const updatedTasks = tasks.filter(task => task.state != 'completed');
-        setTasks(updatedTasks);
+    // send a request to delete the completed tasks from the database as well
+    const handleBulkRemoveCompleted = async () => {
+        const completedTasks = tasks.filter(task => task.state === 'completed');
+        try {
+            await axios.delete(`${API}/task/bulkRemove`, { data: { tasks: completedTasks.map(task => task._id) } });
+            const remainingTasks = tasks.filter(task => task.state !== 'completed');
+            setTasks(remainingTasks);
+        } catch (error) {
+            console.error('Error removing completed tasks:', error);
+        }
     };
 
     const handleTaskCreate = (userId) => {

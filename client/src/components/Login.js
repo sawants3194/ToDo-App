@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../Backend';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Login = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/api/v1/user/login', {
+            const response = await fetch(`${API}/user/login`, {
                 method: 'POST',
 
                 headers: {

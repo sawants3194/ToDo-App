@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { API } from '../Backend';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Signup = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/api/v1/user/create', {
+            const response = await fetch(`${API}/user/create`, {
                 method: 'POST',
 
                 headers: {
