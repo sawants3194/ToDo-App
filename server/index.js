@@ -27,6 +27,6 @@ app.use('/api/v1', userRoute)
 
 // Start the server
 app.listen(process.env.PORT, () => {
-  console.log(process.env.DATABASE)
+  console.log("DB Succeed")
   console.log('Server started on 8000   ');
 });
