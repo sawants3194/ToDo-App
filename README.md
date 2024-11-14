@@ -39,7 +39,8 @@
 <span style="font-size: 20px; font-weight: bold;">Prerequisites</span>
 Ensure you have the following installed:
 
-- Node.js (v18 or later)
+- Node.js (v14)
+- react-router-dom@6.11.2, react@18.2.0
 - MongoDB (Local instance or MongoDB Atlas)
 
 <span style="font-size: 20px; font-weight: bold;">Step 1: Clone the Repository</span>
