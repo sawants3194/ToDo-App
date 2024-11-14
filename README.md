@@ -50,7 +50,7 @@ Ensure you have the following installed:
 
 2. **Navigate to the server project directory**:
     ```bash
-    cd zedblock-task/server
+    cd ToDo-App/server
     ```
 
 3. **Install dependencies**:
@@ -60,13 +60,24 @@ Ensure you have the following installed:
 
 4. **Navigate to the client project directory in new terminal**:
     ```bash
-    cd zedblock-task/client
+    cd ToDo-App/client
     ```
 
 5. **Install dependencies**:
     ```bash
     npm install
     ```
+
+6. Set up environment variables:
+    - Create a `.env` file in both the root and client directories.
+    - Add necessary configurations like:
+        - **DATABASE**: "mongodb://127.0.0.1:27017/database_name"
+        - **PORT**: Port for the backend server
+     
+    - **Client-side (.env)**: Add the following configuration:
+        - `REACT_APP_BACKEND=http://127.0.0.1:PORT/api/v1` (URL of the backend server)
+     
+
 
 ### Accessing the Application
 
