@@ -82,7 +82,7 @@ Ensure you have the following installed:
 ### Accessing the Application
 
 - Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8000`
+- Backend API: `http://localhost:PORT/api/v1`
 
 <span style="font-size: 20px; font-weight: bold;">Usage</span>
 Ensure you have the following installed:
