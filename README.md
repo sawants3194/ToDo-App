@@ -71,9 +71,12 @@ Ensure you have the following installed:
 
 6. Set up environment variables:
     - Create a `.env` file in both the root and client directories.
-    - Add necessary configurations like:
-        - **DATABASE**: "mongodb://127.0.0.1:27017/database_name"
-        - **PORT**: Port for the backend server
+    - **server-side (.env)**:
+        - **SECRET**: Secret key for JWT authentication
+        - **SENDGRID_API_KEY**, **FROM_EMAIL** for email service
+        - `MONGO_URI=mongodb://localhost:27017/(any name)`
+        - `PORT=8000`
+        - `NODE_ENV=development`
      
     - **Client-side (.env)**: Add the following configuration:
         - `REACT_APP_BACKEND=http://127.0.0.1:PORT/api/v1` (URL of the backend server)

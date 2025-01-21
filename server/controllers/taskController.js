@@ -1,5 +1,5 @@
 require('dotenv').config()
-const Task = require('../model/taskModel')
+const Task = require('../models/task')
 var ObjectId = require('mongodb').ObjectId;
 exports.createTask = async (req, res) => {
     const { userId } = req.params;
@@ -91,17 +91,27 @@ exports.updateTaskState = async (req, res) => {
 }
 
 exports.deleteTask = async (req, res) => {
-    const { taskId } = req.params;
-
     try {
-        // Delete the task
-        await Task.deleteOne({ _id: taskId });
+        const { tasks } = req.body; // Array of task IDs passed in the request body
 
-        // Return a success response
-        res.json({ message: 'Task deleted successfully' });
+        if (!tasks || tasks.length === 0) {
+            return res.status(400).json({ message: 'No tasks to delete' });
+        }
+
+        // Remove tasks by their IDs if they are completed
+        const deletedTasks = await Task.deleteMany({
+            _id: { $in: tasks },
+            state: 'completed'
+        });
+
+        if (deletedTasks.deletedCount === 0) {
+            return res.status(404).json({ message: 'No completed tasks found to delete' });
+        }
+
+        res.status(200).json({ message: `${deletedTasks.deletedCount} completed tasks removed successfully.` });
     } catch (error) {
-        console.error('Failed to delete task:', error);
-        res.status(500).json({ message: 'Failed to delete task' });
+        console.error('Error removing tasks:', error);
+        res.status(500).json({ message: 'Failed to remove completed tasks', error: error.message });
     }
 }
 

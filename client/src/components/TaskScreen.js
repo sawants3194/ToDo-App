@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
-import { API } from "../Backend"
+import { API } from "../Backend";
 
 const TaskScreen = () => {
     const location = useLocation();
@@ -15,26 +15,23 @@ const TaskScreen = () => {
     const [allTasks, setAllTasks] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-
     const [filter, setFilter] = useState('all');
+
     useEffect(() => {
         const fetchTasks = async () => {
-            const userId = localStorage.getItem('userId');
-
             try {
                 const response = await axios.get(`${API}/task/getAll/${userId}?page=${page}`);
-                setAllTasks(response.data.tasks);
-                setTotalPages(response.data.totalPages)
-                setTasks(response.data.tasks);
-
-                applyFilter(filter, response.data.tasks);
+                const fetchedTasks = response.data.tasks;
+                setAllTasks(fetchedTasks);
+                setTotalPages(response.data.totalPages);
+                applyFilter(filter, fetchedTasks);
             } catch (error) {
                 console.error('Failed to fetch tasks:', error);
             }
         };
 
         fetchTasks();
-    }, [userId, page]);
+    }, [userId, page, filter]);
 
     const applyFilter = (filterValue, tasks) => {
         let filteredTasks = tasks;
@@ -43,19 +40,17 @@ const TaskScreen = () => {
             filteredTasks = tasks.filter(task => task.state === 'active');
         } else if (filterValue === 'completed') {
             filteredTasks = tasks.filter(task => task.state === 'completed');
-        } else if (filterValue === 'all') {
-            filteredTasks = tasks;  // Show all tasks when filter is 'all'
         }
 
         setTasks(filteredTasks);
     };
-
 
     const handleFilterChange = e => {
         const filterValue = e.target.value;
         setFilter(filterValue);
         applyFilter(filterValue, allTasks);
     };
+
     const handlePreviousPage = () => {
         setPage((prevPage) => Math.max(prevPage - 1, 1));
     };
@@ -63,26 +58,25 @@ const TaskScreen = () => {
     const handleNextPage = () => {
         setPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
+
     const handleSearch = (e) => {
         const searchTerm = e.target.value;
-        setSearchTerm(e.target.value);
+        setSearchTerm(searchTerm);
 
-        const filteredTasks = tasks.filter((task) => {
-            return (task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                task.description.toLowerCase().includes(searchTerm.toLowerCase()))
-
-        }
-        )
+        const filteredTasks = allTasks.filter(task => {
+            return (
+                task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                task.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        });
 
         applyFilter(filter, filteredTasks);
     };
-
 
     const handleTaskCompletionToggle = async (taskId) => {
         const updatedTasks = tasks.map((task) => {
             if (task._id === taskId) {
                 const updatedTask = { ...task, state: task.state === 'completed' ? 'active' : 'completed' };
-                // Update task in backend
                 axios.patch(`${API}/task/update/${taskId}`, { state: updatedTask.state })
                     .then((response) => {
                         console.log('Task updated:', response.data);
@@ -97,25 +91,20 @@ const TaskScreen = () => {
         setTasks(updatedTasks);
     };
 
-    // send a request to delete the completed tasks from the database as well
-    const handleBulkRemoveCompleted = async () => {
-        const completedTasks = tasks.filter(task => task.state === 'completed');
-        try {
-            await axios.delete(`${API}/task/bulkRemove`, { data: { tasks: completedTasks.map(task => task._id) } });
-            const remainingTasks = tasks.filter(task => task.state !== 'completed');
-            setTasks(remainingTasks);
-        } catch (error) {
-            console.error('Error removing completed tasks:', error);
-        }
+    const handleBulkRemoveCompleted = () => {
+        // Filter out the completed tasks from the tasks list
+        const activeTasks = tasks.filter(task => task.state !== 'completed');
+        setTasks(activeTasks);
     };
 
-    const handleTaskCreate = (userId) => {
-        navigate(`/add-task?userId=${userId}`)
-    }
+    const handleTaskCreate = () => {
+        navigate(`/add-task?userId=${userId}`);
+    };
 
     const handleTaskTitleClick = (taskId) => {
         navigate(`/task/details?taskId=${taskId}`);
     };
+
     return (
         <div>
             <Navbar />
@@ -142,7 +131,6 @@ const TaskScreen = () => {
                                 checked={task.state === 'completed'}
                                 onChange={() => handleTaskCompletionToggle(task._id)}
                             />
-
                         </div>
                     ))
                 ) : (
@@ -168,13 +156,9 @@ const TaskScreen = () => {
                     Next
                 </button>
             </div>
-            <button onClick={handleBulkRemoveCompleted}>Remove Completed</button>
-
-
+            <button onClick={handleBulkRemoveCompleted}>Show Active Tasks</button>
         </div>
     );
 };
 
 export default TaskScreen;
-
-
