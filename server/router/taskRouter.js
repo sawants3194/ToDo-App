@@ -3,23 +3,25 @@ const express = require("express");
 
 const { body, check, validationResult } = require("express-validator");
 const { createTask, updateTask, deleteTask, getAllTasksByUserId,searchTasks, getTaskById, updateTaskState, updateTaskById } = require("../controllers/taskController");
+const { isSignIn, isAuthenticated } = require("../controllers/userController");
 const router = express.Router();
 
+// Middleware for common user authentication
+const authenticateUser = [isSignIn, isAuthenticated];
+router.post("/task/create/:userId",authenticateUser, createTask);
 
-router.post("/task/create/:userId", createTask);
+router.get("/task/search",authenticateUser, searchTasks);
 
-router.get("/task/search", searchTasks);
+router.put('/task/state/update/:taskId',authenticateUser, updateTaskState);
 
-router.put('/task/state/update/:taskId', updateTaskState);
+router.put('/task/update/:taskId',authenticateUser, updateTaskById);
 
-router.put('/task/update/:taskId', updateTaskById);
-
-router.delete('/task/bulkRemove', deleteTask);
+router.delete('/task/bulkRemove',authenticateUser, deleteTask);
 
 router.get('/task/getAll/:userId', getAllTasksByUserId);
 
-router.get('/task/getById/:taskId', getTaskById)
-
-
+router.get('/task/getById/:taskId',authenticateUser, getTaskById)
+  
+ 
 module.exports = router;
    

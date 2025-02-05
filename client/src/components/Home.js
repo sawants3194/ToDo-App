@@ -1,20 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
+import Base from '../core/Base';
 
 const Home = () => {
   return (
+    <Base>
     <div>
-      <Navbar/>
       <h2>Welcome to the Todo App!</h2>
       <p>This is the home page of the Todo App.</p>
       <p>
-        If you don't have an account, <Link to="/signup">Sign up</Link> here.
+        If you don't have an account, <Link to="/user/signup">Sign up</Link> here.
       </p>
       <p> 
-        Already have an account? <Link to="/login">Login</Link> here.
+        Already have an account? <Link to="/user/signin">Login</Link> here.
       </p>
     </div>
+    </Base>
   );
 };
 

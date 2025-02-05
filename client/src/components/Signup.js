@@ -1,86 +1,111 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { API } from '../Backend';
-
+import React, { useState } from "react";
+import { signup } from "../auth/helper/index";
+import { Link } from "react-router-dom";
+import Base from "../core/Base";
 const Signup = () => {
-    const navigate = useNavigate();
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+    error: "",
+    success: "",
+  });
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+  const { name, email, password, error, success } = values;
 
-    const handlePasswordChange = (e) => {
-        const newPassword = e.target.value;
-        setPassword(newPassword);
-        setError('');
-    };
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: false, [name]: event.target.value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const regex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
-        if (!regex.test(password)) {
-            setError(
-                'A valid password should be at least 6 characters long and contain at least one uppercase, one numeric character and one lowercase character.'
-            );
-            return;
+  const onSubmit = (event) => {
+    event.preventDefault();
+    setValues({ ...values, error: false, success: false });
+    signup({ name, email, password })
+      .then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error, success: false });
+        } else {
+          setValues({
+            ...values,
+            name: "",
+            email: "",
+            password: "",
+            error: "",
+            success: true,
+          });
         }
-        // Prepare login request payload
-        const payload = {
-            username,
-            password,
-        };
-
-        try {
-            const response = await fetch(`${API}/user/create`, {
-                method: 'POST',
-
-                headers: {
-                    'Access-Control-Allow-Origin': "*",
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (response.ok) {
-                // Successful login
-                navigate('/login');
-            } else {
-                // Error handling for unsuccessful login
-                console.error('Login failed');
-            }
-        } catch (error) {
-            console.error('An error occurred during login:', error);
-        }
-
-    };
-
+      })
+      .catch((error) => console.log(error));
+  };
+  const SignUpForm = () => {
     return (
-        <div>
-            <h2>Signup</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                />
-                {error && <p className="error">{error}</p>}
-                <button type="submit">Signup</button>
-            </form>
-            <p>
-                Already have an account? <Link to="/login">Login</Link>
-            </p>
-        </div>
-    );
-};
+      <div className="row">
+        <div className="col-md-6 offset-sm-3 text-left">
+          <form>
+            <div className="form-group">
+              <label className="text-light">Name</label>
+              <input
+                onChange={handleChange("name")}
+                value={name}
+                className="form-control"
+                type="text"
+              />
+            </div>
+            <div className="form-group">
+              <label className="text-light">Email</label>
+              <input
+                onChange={handleChange("email")}
+                value={email}
+                className="form-control"
+                type="email"
+              />
+            </div>
 
+            <div className="form-group">
+              <label className="text-light">Password</label>
+              <input
+                onChange={handleChange("password")}
+                value={password}
+                className="form-control"
+                type="password"
+              />
+            </div>
+            <button onClick={onSubmit} className="btn btn-success btn-block">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+  const successMessage = () => {
+    return (
+      <div
+        className="alert alert-success"
+        style={{ display: success ? "" : "none" }}
+      >
+        SignUp Successful.Please <Link to="/user/signin">Login Here</Link>
+      </div>
+    );
+  };
+  const errorMessage = () => {
+    return (
+      <div
+        className="alert alert-warning"
+        style={{ display: error ? "" : "none" }}
+      >
+        {error}
+      </div>
+    );
+  };
+
+  return (
+    <Base title="SignUp Page">
+      {SignUpForm()}
+      {successMessage()}
+      {errorMessage()}
+      
+    </Base>
+  );
+};
 export default Signup;

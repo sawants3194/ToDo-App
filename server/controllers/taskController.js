@@ -12,7 +12,7 @@ exports.createTask = async (req, res) => {
             user: userId,
         });
         await todo.save();
-        res.json(todo);
+        return res.json({todo, "success": true});
     } catch (error) {
         res.status(500).json({ error: 'An error occurred while creating the task' });
     }
@@ -56,12 +56,14 @@ exports.searchTasks = async(req , res) => {
             if(tasks.length == 0){
                 return res.status(404).json({ message : 'No tasks found'});
             }
-            res.json(tasks);
+        return    res.json(tasks);
         
     }
     catch(error){
-        console.log("Error fetching tasks: ", error);
-        res.status(500).json({ error : 'An error occured while searching for tasks'});
+        res.status(500).json({ 
+            message : 'An error occured while searching for tasks',
+            error:error
+            });
     }
 }
 
@@ -116,7 +118,7 @@ exports.deleteTask = async (req, res) => {
 }
 
 exports.getAllTasksByUserId = async (req, res) => {
-    try {
+    try { 
         const userId = req.params.userId;
         const { page = 1, limit = 5, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
 
@@ -139,13 +141,13 @@ exports.getAllTasksByUserId = async (req, res) => {
         console.error('Failed to fetch tasks:', error);
         res.status(500).json({ error: 'Failed to fetch tasks' });
     }
-
+  
 }
-
+ 
 exports.getTaskById = async (req, res) => {
-
-    try {
-        var taskId = req.params.taskId
+ 
+    try {  
+        const { taskId } = req.params;
 
 
         // Find tasks by user ID
@@ -155,8 +157,8 @@ exports.getTaskById = async (req, res) => {
     } catch (error) {
         console.error('Failed to fetch tasks:', error);
         res.status(500).json({ error: 'Failed to fetch tasks' });
-    }
-}
+    } 
+}  
 
 exports.updateTaskById = async (req, res) => {
     const taskId = req.params.taskId;

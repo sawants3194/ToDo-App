@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from './Navbar';
 import { API } from "../Backend";
+import { isAuthenticated } from '../auth/helper';
+import Base from '../core/Base';
 
 const TaskScreen = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    const searchParams = new URLSearchParams(location.search);
-    const userId = searchParams.get('userId') || localStorage.getItem('userId');
+    const history = useHistory();
+    const { user, token}  =  isAuthenticated()
     const [tasks, setTasks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [allTasks, setAllTasks] = useState([]);
@@ -20,7 +18,9 @@ const TaskScreen = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await axios.get(`${API}/task/getAll/${userId}?page=${page}`);
+                const response = await axios.get(`${API}/task/getAll/${user._id}?page=${page}`,{headers: {
+                    'Authorization': `Bearer ${token}`,
+                }});
                 const fetchedTasks = response.data.tasks;
                 setAllTasks(fetchedTasks);
                 setTotalPages(response.data.totalPages);
@@ -28,10 +28,10 @@ const TaskScreen = () => {
             } catch (error) {
                 console.error('Failed to fetch tasks:', error);
             }
-        };
+        }; 
 
         fetchTasks();
-    }, [userId, page, filter]);
+    }, [user._id, page, filter, token]);
 
     const applyFilter = (filterValue, tasks) => {
         let filteredTasks = tasks;
@@ -77,7 +77,9 @@ const TaskScreen = () => {
         const updatedTasks = tasks.map((task) => {
             if (task._id === taskId) {
                 const updatedTask = { ...task, state: task.state === 'completed' ? 'active' : 'completed' };
-                axios.patch(`${API}/task/update/${taskId}`, { state: updatedTask.state })
+                axios.patch(`${API}/task/update/${taskId}`, { state: updatedTask.state }, {headers: {
+                    'Authorization': `Bearer ${token}`,
+                },})
                     .then((response) => {
                         console.log('Task updated:', response.data);
                     })
@@ -92,22 +94,19 @@ const TaskScreen = () => {
     };
 
     const handleBulkRemoveCompleted = () => {
-        // Filter out the completed tasks from the tasks list
         const activeTasks = tasks.filter(task => task.state !== 'completed');
         setTasks(activeTasks);
     };
 
-    const handleTaskCreate = () => {
-        navigate(`/add-task?userId=${userId}`);
-    };
+    
 
     const handleTaskTitleClick = (taskId) => {
-        navigate(`/task/details?taskId=${taskId}`);
+        history.push(`/task/details/${taskId}`);
     };
 
     return (
+        <Base>
         <div>
-            <Navbar />
             <label htmlFor="filter">Filter:</label>
             <select id="filter" value={filter} onChange={handleFilterChange}>
                 <option value="all">All</option>
@@ -125,10 +124,10 @@ const TaskScreen = () => {
                 {tasks.length > 0 ? (
                     tasks.map((task) => (
                         <div key={task._id} className="task-tile" onClick={() => handleTaskTitleClick(task._id)}>
+                            <h4>{task._id}</h4>
                             <h4>{task.title}</h4>
                             <input
                                 type="checkbox"
-                                checked={task.state === 'completed'}
                                 onChange={() => handleTaskCompletionToggle(task._id)}
                             />
                         </div>
@@ -156,8 +155,8 @@ const TaskScreen = () => {
                     Next
                 </button>
             </div>
-            <button onClick={handleBulkRemoveCompleted}>Show Active Tasks</button>
         </div>
+        </Base>
     );
 };
 

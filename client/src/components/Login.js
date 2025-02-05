@@ -1,69 +1,125 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { API } from '../Backend';
+import React, { useState } from "react";
+import Base from "../core/Base";
+import { Link, Redirect } from "react-router-dom";
+import '../styles.css';
+import { signin, authenticate, isAuthenticated } from "../auth/helper";
 
-const Login = () => {
-    const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('')
+const Signin = () => {
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+    error: "",
+    loading: false,
+    didRedirect: false,
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // Prepare login request payload
-        const payload = {
-            username,
-            password,
-        };
+  const { email, password, error, loading, didRedirect } = values;
 
-        try {
-            const response = await fetch(`${API}/user/login`, {
-                method: 'POST',
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: false, [name]: event.target.value });
+  };
 
-                headers: {
-                    'Access-Control-Allow-Origin': "*",
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            })
-            const data = await response.json();
-            console.log(data)
-            setError(data.error)
-            // Store the user ID in the local storage
-            localStorage.setItem('userId', data.user._id);
-            navigate(`/taskscreen?userId=${data.user._id}`);
-
-
-        } catch (error) {
-            console.error('An error occurred during login:', error);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    setValues({ ...values, error: false, loading: true });
+    signin({ email, password })
+      .then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error, loading: false });
+        } else {
+          authenticate(data, () => {
+            setValues({
+              ...values,
+              didRedirect: true,
+            });
+          });
         }
-    };
+      })
+      .catch(error => {return console.log("signin request failed", error)});
+  };
 
+  const performRedirect = () => {
+    if (didRedirect) {
+      // Redirecting to /taskscreen after successful sign-in
+      return <Redirect to="/taskscreen" />;
+    }
+    if (isAuthenticated()) {
+      return <Redirect to="/taskscreen" />;  // Redirecting to /taskscreen if already authenticated.
+    }
+  };
+
+  const loadingMessage = () => {
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="submit">Login</button>
-            </form>
-            {error && <p className="error">{error}</p>}
-            <p>
-                Don't have an account? <Link to="/signup">Sign up</Link>
-            </p>
+      loading && (
+        <div className="alert alert-info">
+          <h2>Loading...</h2>
         </div>
+      )
     );
+  };
+
+  const errorMessage = () => {
+    return (
+      <div className="row">
+        <div className="col-md-6 offset-sm-3 text-left">
+          <div
+            className="alert alert-danger"
+            style={{ display: error ? "" : "none" }}
+          >
+            {error}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const signInForm = () => {
+    return (
+      <div className="row">
+        <div className="col-md-6 offset-sm-3 text-left">
+          <form>
+            <div className="form-group">
+              <label className="text-light">Email</label>
+              <input
+                onChange={handleChange("email")}
+                value={email}
+                className="form-control"
+                type="email"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="text-light">Password</label>
+              <input
+                onChange={handleChange("password")}
+                value={password}
+                className="form-control"
+                type="password"
+              />
+            </div>
+            <button onClick={onSubmit} className="btn btn-success btn-block">
+              Submit
+            </button>
+          </form>
+          <Link
+            className="nav-link offset-sm-3 text-right"
+            to="/user/recover"
+          >
+            Forgot Password?
+          </Link>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Base title="Sign In page" description="A page for user to sign in!">
+      {loadingMessage()}
+      {errorMessage()}
+      {signInForm()}
+      {performRedirect()}
+    </Base>
+  );
 };
 
-export default Login;
+export default Signin;

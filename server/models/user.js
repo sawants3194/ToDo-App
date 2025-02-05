@@ -14,16 +14,13 @@ var userSchema = new mongoose.Schema({
     required: true,
     maxlength: 30,
     trim: true,
-  },
+  }, 
   //TODO: come back here later
   encry_password: {
     type: String,
   },
   salt: String,
-  purchases: {
-    type: Array,
-    default: [],
-  },
+  
   role: {
     default: 0,
     type: Number,

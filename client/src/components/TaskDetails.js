@@ -1,88 +1,77 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { API } from '../Backend';
+import Base from '../core/Base';
+import { isAuthenticated } from '../auth/helper';
 
-const TaskDetails = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
+const TaskDetails = ({ match }) => {
+    const history = useHistory();
+    const { taskId } = match.params;
+    const [task, setTask] = useState(null);
+    const [loading, setLoading] = useState(true); // Added loading state
 
-    const searchParams = new URLSearchParams(location.search);
-    const taskId = searchParams.get('taskId');
-    const [tasks, setTasks] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    const {  token } = isAuthenticated();
 
     useEffect(() => {
-        const fetchTasks = async () => {
+        const fetchTaskDetails = async () => {
             try {
-                const response = await axios.get(  `${API}/task/getById/${taskId}`);
-                setTasks(response.data.task);
+                const response = await axios.get(`${API}/task/getById/${taskId}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log(response);
+                setTask(response.data.task);
+                setLoading(false); // Set loading to false after task is fetched
             } catch (error) {
-                console.error('Failed to fetch tasks:', error);
+                console.error('Failed to fetch the task details:', error);
+                setLoading(false);
             }
         };
 
-        fetchTasks();
-    }, [taskId]);
+        fetchTaskDetails();
+    }, [taskId, token]);
 
-
-
-    const handleTaskCompletionToggle = (taskId) => {
-        // Implement the logic to toggle the completion state of the task
-        // For example, make an API request to update the task's completion state in the backend
-        // and update the tasks state in the frontend accordingly
-    };
+    
 
     const handleEditTask = () => {
-        navigate(`/edit-task?taskId=${taskId}`)
+        history.push(`/edit-task/${taskId}`);
     };
-    const handleDeleteTask = async () => {
-        try {
-            const response = await axios.delete(`${API}/task/delete/${taskId}`);
 
-            if (response.status === 200) {
-                // Show a success message to the user
-                
-                // Optionally, you can update the task list state or fetch updated task list
-                // after successful deletion
-                
-                // Optionally, you can redirect the user to the task list screen
-                navigate(`/taskscreen?userId=${tasks.user}`);
-              }
-           
-            // Handle successful deletion, e.g., show a success message or redirect to task list screen
-        } catch (error) {
-            console.error('Failed to delete task:', error);
-            // Handle error, e.g., show an error message
-        }
-    };
+    
+
     return (
-        <div> 
-            <Navbar/>
-            <h3>Tasks:</h3>
+        <Base>
+            <div>
+                <h3>Task Details:</h3>
+                {loading ? (
+                    <p>Loading task details...</p>
+                ) : task ? (
+                    <div className="task-tile">
+                        <h4>{task.title}</h4>
+                        <p>{task.description}</p>
+                        {/* <label>
+                            <input
+                                type="checkbox"
+                                checked={task.state === 'completed'}
+                                onChange={handleTaskCompletionToggle}
+                            />
+                            Mark as {task.state === 'completed' ? 'Active' : 'Completed'}
+                        </label> */}
+                        <button onClick={handleEditTask}>Edit Task</button>
+                        {/* <button onClick={handleDeleteTask}>Delete Task</button> */}
+                        <p style={{ color: "black", marginTop: "10px" }}>*The corrected sentence is:
 
-            <div className="task-tiles">
-
-
-                <div key={tasks._id} className="task-tile" >
-                    <h4>{tasks.title}</h4>
-                    <h4>{tasks.description}</h4>
-                    <input
-                        type="checkbox"
-                        checked={tasks.state === 'completed'}
-                        onChange={() => handleTaskCompletionToggle(tasks._id)}
-                    />
-                    <button onClick={handleDeleteTask}>Delete Task</button>
-                    <button onClick={() => {
-                        handleEditTask(tasks._id)
-                    }}>Edit Task</button>
-                </div>
-
-
+                            "If you want to delete a task, just mark it as completed in the Edit Task button."*</p>
+                    </div> 
+                ) : (
+                    <p>Task not found.</p>
+                )}
             </div>
-        </div>
+        </Base>
     );
-}
+};
 
-export default TaskDetails
+export default TaskDetails;
