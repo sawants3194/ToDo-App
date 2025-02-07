@@ -18,7 +18,7 @@ jobs:
 
       - name: Generate project structure
         run: |
-          tree -L 2 > project-structure.txt
+          tree -L 4 > project-structure.txt
           cat project-structure.txt
 
       - name: Upload as artifact
