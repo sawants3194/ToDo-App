@@ -1,0 +1,21 @@
+name: Generate Project Structure
+
+on: [push]
+
+jobs:
+  list-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate project structure
+        run: |
+          tree -L 2 > project-structure.txt
+          cat project-structure.txt
+
+      - name: Upload as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: project-structure
+          path: project-structure.txt
