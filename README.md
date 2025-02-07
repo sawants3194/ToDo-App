@@ -88,16 +88,6 @@ Ensure you have the following installed:
 - Frontend: `http://localhost:3000`
 - Backend API: `http://localhost:PORT/api/v1`
 
-<span style="font-size: 20px; font-weight: bold;">Usage</span>
-Ensure you have the following installed:
-
-<span style="font-size: 20px; font-weight: bold;">Prerequisites</span>
-Ensure you have the following installed:
-
-- Sign up with your email and password.
-- Log in to access your tasks.
-- Create, update, delete, and search tasks.
-
 ## API Endpoints
 
 ### Task Management
