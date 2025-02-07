@@ -1,21 +1,26 @@
 name: Generate Project Structure
 
-on: [push]
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
 
 jobs:
-  list-structure:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Generate project structure
-        run: |
-          tree -L 2 > project-structure.txt
-          cat project-structure.txt
-
-      - name: Upload as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: project-structure
-          path: project-structure.txt
+    - name: Checkout Code
+      uses: actions/checkout@v3
+      
+    - name: Install tree
+      run: sudo apt-get install -y tree
+      
+    - name: Generate File Tree
+      run: tree -a -I "node_modules|build|.git" > project-structure.txt
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: project-structure
+        path: project-structure.txt
