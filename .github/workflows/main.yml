@@ -3,7 +3,7 @@ name: Generate Project Structure
 on: 
   push:
     branches:
-      - main  # Runs only on main branch
+      - main  # Runs only on the main branch
 
 jobs:
   list-structure:
@@ -11,7 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # Updated to the latest version
+
+      - name: Install tree
+        run: sudo apt-get install tree -y  # Install tree if not available
 
       - name: Generate project structure
         run: |
@@ -19,7 +22,7 @@ jobs:
           cat project-structure.txt
 
       - name: Upload as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: project-structure
           path: project-structure.txt
