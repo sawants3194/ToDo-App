@@ -116,8 +116,9 @@ Ensure you have the following installed:
 
 | Method  | Endpoint                                | Description                      |
 |---------|-----------------------------------------|----------------------------------|
-| POST    | `/user/create`                         | Create a new user               |
-| POST    | `/user/login`                          | User login                      |
+| POST    | `/user/signup`                         | Create a new user               |
+| POST    | `/user/signin`                          | User login                      |
+| GET    | `/user/signout`                          | User Sign Out                      |
 
 
 ## Contributing
