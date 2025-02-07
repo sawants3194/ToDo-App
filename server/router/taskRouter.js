@@ -16,7 +16,7 @@ router.put('/task/state/update/:taskId',authenticateUser, updateTaskState);
 
 router.put('/task/update/:taskId',authenticateUser, updateTaskById);
 
-router.delete('/task/bulkRemove',authenticateUser, deleteTask);
+// router.delete('/task/bulkRemove',authenticateUser, deleteTask);
 
 router.get('/task/getAll/:userId', getAllTasksByUserId);
 
