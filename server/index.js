@@ -68,7 +68,7 @@ const port = config.app.port;
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
-    console.log(`🚀 Server is running on port ${port}`);
+    console.log(`🚀 Servers is running on port ${port}`);
   });
 }
 
