@@ -20,7 +20,8 @@ let db_uri;
 // Load environment variables based on the environment
 db_uri = process.env.NODE_ENV === 'test' ? config.database.uri_test : config.database.uri_dev;
 
-console.log("🔍 MONGO_URI:", db_uri);
+console.log("🔍 MONGO_URI in VS Code:", process.env.MONGO_URI);
+
 
 // Connect to MongoDB
 mongoose
