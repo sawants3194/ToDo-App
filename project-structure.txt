@@ -1,0 +1,58 @@
+.
+├── README.md
+├── client
+│   ├── README.md
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   └── src
+│       ├── App.css
+│       ├── App.js
+│       ├── App.test.js
+│       ├── Backend.js
+│       ├── Routes.js
+│       ├── assets
+│       │   ├── icons
+│       │   └── tshirts
+│       ├── auth
+│       │   └── helper
+│       ├── components
+│       │   ├── Home.js
+│       │   ├── Login.js
+│       │   ├── Signup.js
+│       │   ├── TaskAdd.js
+│       │   ├── TaskDetails.js
+│       │   ├── TaskEdit.js
+│       │   └── TaskScreen.js
+│       ├── core
+│       │   ├── Base.js
+│       │   └── Menu.js
+│       ├── index.css
+│       ├── index.js
+│       ├── logo.svg
+│       ├── reportWebVitals.js
+│       ├── setupTests.js
+│       └── styles.css
+├── project-structure.txt
+└── server
+    ├── config.js
+    ├── controllers
+    │   ├── taskController.js
+    │   └── userController.js
+    ├── index.js
+    ├── models
+    │   ├── task.js
+    │   └── user.js
+    ├── package-lock.json
+    ├── package.json
+    └── router
+        ├── taskRouter.js
+        └── userRouter.js
+
+15 directories, 41 files

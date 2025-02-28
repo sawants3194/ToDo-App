@@ -124,7 +124,6 @@ const TaskScreen = () => {
                 {tasks.length > 0 ? (
                     tasks.map((task) => (
                         <div key={task._id} className="task-tile" onClick={() => handleTaskTitleClick(task._id)}>
-                            <h4>{task._id}</h4>
                             <h4>{task.title}</h4>
                             <input
                                 type="checkbox"
