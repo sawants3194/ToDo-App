@@ -93,10 +93,7 @@ const TaskScreen = () => {
         setTasks(updatedTasks);
     };
 
-    const handleBulkRemoveCompleted = () => {
-        const activeTasks = tasks.filter(task => task.state !== 'completed');
-        setTasks(activeTasks);
-    };
+   
 
     
 
