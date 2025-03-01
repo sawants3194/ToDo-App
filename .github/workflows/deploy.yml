@@ -67,11 +67,12 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Transfer Files to EC2
+      - name: Test SSH Connection
         run: |
-          echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
+         echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
-          scp -i private_key.pem -r . ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/ToDo-App/
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@${{ secrets.EC2_HOST }} "echo Connected!"
+
 
       - name: Restart Server on EC2
         run: |
