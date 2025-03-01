@@ -4,7 +4,7 @@ import Menu from "./Menu";
 
 import "../styles.css";
 const Base = ({
-  title = "My title",
+  title = "My title Production build",
 
   description = "My description",
   className = "bg-dark text-white p-4",
