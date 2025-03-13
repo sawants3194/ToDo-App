@@ -5,6 +5,9 @@ const {
   signup,
   signout,
   signin,
+  validateResetToken,
+  updatePassword,
+  requestPasswordRecovery,
   
 } = require("../controllers/userController");
 
@@ -40,6 +43,16 @@ router.post("/user/signup",validateSignup, handleValidationErrors, signup);
 router.post("/user/signin", validateSignin, handleValidationErrors, signin);
 router.get("/user/signout", signout);
 
+// Password recovery and reset routes
+// Initiate password recovery
+router.post("/user/password-recovery", async (req, res, next) => {
+  try {
+      await requestPasswordRecovery(req, res);
+  } catch (error) {
+      next(error); // Pass to the error-handling middleware
+  }
+});
+router.post("/user/password-reset/:token", validateResetToken, updatePassword);// Reset password
 
 module.exports = router;
    
