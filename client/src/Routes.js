@@ -7,6 +7,8 @@ import TaskScreen from './components/TaskScreen';
 import TaskDetails from './components/TaskDetails';
 import EditTask from './components/TaskEdit';
 import TaskAdd from './components/TaskAdd';
+import Forgot from './components/Forgot';
+import NewPassword from './components/NewPassword';
 
 const RouterList = () => {
     return (
@@ -19,6 +21,9 @@ const RouterList = () => {
                 <Route path="/task/details/:taskId" component={TaskDetails} />
                 <Route path="/edit-task/:taskId" component={EditTask} />
                 <Route path="/add-task" component={TaskAdd} />
+                <Route path='/user/recover' exact component={Forgot} ></Route>
+                <Route path='/user/newPassword' exact component={NewPassword} ></Route>
+
             </Switch>
         </BrowserRouter>
     );
