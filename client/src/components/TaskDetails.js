@@ -62,9 +62,8 @@ const TaskDetails = ({ match }) => {
                         </label> */}
                         <button onClick={handleEditTask}>Edit Task</button>
                         {/* <button onClick={handleDeleteTask}>Delete Task</button> */}
-                        <p style={{ color: "black", marginTop: "10px" }}>*The corrected sentence is:
-
-                            "If you want to delete a task, just mark it as completed in the Edit Task button."*</p>
+                        <p style={{ color: "black", marginTop: "10px" }}>If you want to delete a task, 
+                            just mark it as completed in the Edit Task button.</p>
                     </div> 
                 ) : (
                     <p>Task not found.</p>
