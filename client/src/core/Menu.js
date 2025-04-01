@@ -2,70 +2,50 @@ import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth/helper";
 
+// Refactored currentTab function for class name instead of inline styles
 const currentTab = (history, path) => {
-  if (history.location.pathname === path) {
-    return { color: "#2ecc72" };
-  } else {
-    return { color: "#FFFFFF" };
-  }
+  return history.location.pathname === path ? "active-tab" : "";
 };
 
 const Menu = ({ history }) => (
   <div>
     <ul className="nav nav-tabs bg-dark">
       <li className="nav-item">
-        <Link style={currentTab(history, "/")} className="nav-link" to="/">
+        <Link className={`nav-link ${currentTab(history, "/")}`} to="/">
           Home
         </Link>
       </li>
       
-      
       {isAuthenticated() && (
-        <li className="nav-item">
-        <Link
-          style={currentTab(history, "/taskscreen")}
-          className="nav-link"
-          to="/taskscreen"
-        >
-          Tasks
-        </Link>
-      </li>
-      )}
-
-{isAuthenticated() && (
-        <li className="nav-item">
-        <Link
-          style={currentTab(history, "/add-task")}
-          className="nav-link"
-          to="/add-task"
-        >
-          Create Task
-        </Link>
-      </li>
+        <>
+          <li className="nav-item">
+            <Link className={`nav-link ${currentTab(history, "/taskscreen")}`} to="/taskscreen">
+              Tasks
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className={`nav-link ${currentTab(history, "/add-task")}`} to="/add-task">
+              Create Task
+            </Link>
+          </li>
+        </>
       )}
       
       {!isAuthenticated() && (
-        <Fragment>
+        <>
           <li className="nav-item">
-            <Link
-              style={currentTab(history, "/user/signup")}
-              className="nav-link"
-              to="/user/signup"
-            >
+            <Link className={`nav-link ${currentTab(history, "/user/signup")}`} to="/user/signup">
               Signup
             </Link>
           </li>
           <li className="nav-item">
-            <Link
-              style={currentTab(history, "/user/signin")}
-              className="nav-link"
-              to="/user/signin"
-            >
+            <Link className={`nav-link ${currentTab(history, "/user/signin")}`} to="/user/signin">
               Sign In
             </Link>
           </li>
-        </Fragment>
+        </>
       )}
+
       {isAuthenticated() && (
         <li className="nav-item">
           <span
@@ -79,7 +59,7 @@ const Menu = ({ history }) => (
             Signout
           </span>
         </li>
-      )}     
+      )}
     </ul>
   </div>
 );

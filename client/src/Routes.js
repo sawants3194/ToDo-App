@@ -1,18 +1,21 @@
-import React from 'react';
+import React, {Suspense, lazy} from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from './components/Home';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import TaskScreen from './components/TaskScreen';
-import TaskDetails from './components/TaskDetails';
-import EditTask from './components/TaskEdit';
-import TaskAdd from './components/TaskAdd';
-import Forgot from './components/Forgot';
-import NewPassword from './components/NewPassword';
+// Lazy load components
+const Home = lazy(() => import("./components/Home"));
+const Login = lazy(() => import("./components/Login"));
+const Signup = lazy(() => import("./components/Signup"));
+const TaskScreen = lazy(() => import("./components/TaskScreen"));
+const TaskDetails = lazy(() => import("./components/TaskDetails"));
+const EditTask = lazy(() => import("./components/TaskEdit"));
+const TaskAdd = lazy(() => import("./components/TaskAdd"));
+const Forgot = lazy(() => import("./components/Forgot"));
+const NewPassword = lazy(() => import("./components/NewPassword"));
 
 const RouterList = () => {
     return (
         <BrowserRouter>
+        <Suspense fallback={<div>Loading...</div>}>
+
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/user/signin" component={Login} />
@@ -25,6 +28,7 @@ const RouterList = () => {
                 <Route path='/user/newPassword' exact component={NewPassword} ></Route>
 
             </Switch>
+        </Suspense>
         </BrowserRouter>
     );
 };

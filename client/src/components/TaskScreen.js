@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import {  useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { API } from "../Backend";
 import { isAuthenticated } from '../auth/helper';
-import Base from '../core/Base';
+const Base = lazy(() => import("../core/Base"));
+
 
 const TaskScreen = () => {
     const history = useHistory();
@@ -102,7 +103,8 @@ const TaskScreen = () => {
     };
 
     return (
-        <Base>
+        <Suspense  fallback={<div>loading...</div>}>
+            <Base>
         <div>
             <label htmlFor="filter">Filter:</label>
             <select id="filter" value={filter} onChange={handleFilterChange}>
@@ -153,6 +155,7 @@ const TaskScreen = () => {
             </div>
         </div>
         </Base>
+        </Suspense>
     );
 };
 

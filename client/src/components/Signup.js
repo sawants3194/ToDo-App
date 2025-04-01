@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { signup } from "../auth/helper/index";
 import { Link } from "react-router-dom";
-import Base from "../core/Base";
+// import "../styles.css"
+const Base = lazy(() => import("../core/Base"));
+
 const Signup = () => {
   const [values, setValues] = useState({
     name: "",
@@ -37,75 +39,71 @@ const Signup = () => {
       })
       .catch((error) => console.log(error));
   };
-  const SignUpForm = () => {
-    return (
-      <div className="row">
-        <div className="col-md-6 offset-sm-3 text-left">
-          <form>
-            <div className="form-group">
-              <label className="text-light">Name</label>
-              <input
-                onChange={handleChange("name")}
-                value={name}
-                className="form-control"
-                type="text"
-              />
-            </div>
-            <div className="form-group">
-              <label className="text-light">Email</label>
-              <input
-                onChange={handleChange("email")}
-                value={email}
-                className="form-control"
-                type="email"
-              />
-            </div>
 
-            <div className="form-group">
-              <label className="text-light">Password</label>
-              <input
-                onChange={handleChange("password")}
-                value={password}
-                className="form-control"
-                type="password"
-              />
-            </div>
-            <button onClick={onSubmit} className="btn btn-success btn-block">
-              Submit
-            </button>
-          </form>
-        </div>
+  const successMessage = () => (
+    <div className="alert alert-success" style={{ display: success ? "" : "none" }}>
+      SignUp Successful. Please <Link to="/user/signin">Login Here</Link>
+    </div>
+  );
+
+  const errorMessage = () => (
+    <div className="alert alert-warning" style={{ display: error ? "" : "none" }}>
+      {error}
+    </div>
+  );
+
+  const SignUpForm = () => (
+    <div className="signup-container">
+      <div className="signup-form">
+        <form onSubmit={onSubmit}>
+          <h2 className="form-title">Create Account</h2>
+          <div className="form-group">
+            <label>Name</label>
+            <input
+              onChange={handleChange("name")}
+              value={name}
+              className="form-control"
+              type="text"
+              placeholder="Enter your name"
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              onChange={handleChange("email")}
+              value={email}
+              className="form-control"
+              type="email"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              onChange={handleChange("password")}
+              value={password}
+              className="form-control"
+              type="password"
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" className="btn btn-success btn-block">
+            Sign Up
+          </button>
+        </form>
       </div>
-    );
-  };
-  const successMessage = () => {
-    return (
-      <div
-        className="alert alert-success"
-        style={{ display: success ? "" : "none" }}
-      >
-        SignUp Successful.Please <Link to="/user/signin">Login Here</Link>
-      </div>
-    );
-  };
-  const errorMessage = () => {
-    return (
-      <div
-        className="alert alert-warning"
-        style={{ display: error ? "" : "none" }}
-      >
-        {error}
-      </div>
-    );
-  };
+    </div>
+  );
 
   return (
-    <Base title="SignUp Page">
-      {SignUpForm()}
-      {successMessage()}
-      {errorMessage()}
-      
-    </Base>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Base title="SignUp Page">
+        {SignUpForm()}
+        {successMessage()}
+        {errorMessage()}
+      </Base>
+    </Suspense>
   );
 };
+
 export default Signup;

@@ -1,44 +1,129 @@
-.btn,
-.jumbotron,
-.nav :hover {
-  border-radius: 0px;
+/* General Body Styling */
+body {
+  background: linear-gradient(to right, #4e9ef1, #1d4b87);
+  font-family: 'Roboto', sans-serif;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-body {
-  background: #326597;
+/* Signup Form Container */
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
-  min-height: fit-content;
-  
 }
-footer {
-  clear: both;
-  /* height: 100px; */
-    /* background: rgb(179, 9, 9); */
-    /* display: block; */
-    position: relative;
-    /* height: 100px;
-    margin-top: -10px; */
-    box-sizing: border-box;
-}
-input[type=email] {
+
+.signup-form {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
   width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Form Title */
+.form-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Input Fields Styling */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #555;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #4e9ef1;
+  outline: none;
+}
+
+/* Submit Button Styling */
+.btn {
+  background-color: #4e9ef1;
+  color: #fff;
+  border: none;
   padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  background-image: url('../src/assets/icons/gmail.svg') ;
-  background-repeat: no-repeat;
-  background-position: right;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
-input[type=password] {
-  width: 100%;
-  padding: 0.375rem .75rem;
-  margin: 8px 0; 
-  box-sizing: border-box;
-  background-image: url('../src/assets/icons/padlock.svg') ;
-  background-repeat: no-repeat;
-  background-position: right;
-  
+
+.btn:hover {
+  background-color: #1d4b87;
 }
-input[type="radio"]{
-  display: none;
+
+/* Success and Error Messages */
+.alert {
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+/* Link Styling */
+a {
+  color: #4e9ef1;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+/* Highlight active tab */
+.active-tab {
+  color: #2ecc72 !important;  /* Green color for active tab */
+  font-weight: bold;           /* Makes the active tab bold */
+  border-bottom: 2px solid #2ecc72;  /* Optional: Adds a green underline to active tab */
+}
+
+/* Optional: Style for the navigation items */
+.nav-link {
+  color: #ffffff;  /* Default text color for links */
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #2ecc72;  /* Hover effect on links */
+}
+
+.alert-info {
+  background-color: #17a2b8; /* Blue background for loading */
+  color: white;
+}
+.alert-danger {
+  background-color: #e74c3c; /* Red background for error */
+  color: white;
 }
