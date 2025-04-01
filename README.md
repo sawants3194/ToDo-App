@@ -8,6 +8,7 @@
 5. [API Endpoints](#api-endpoints)
 6. [Contributing](#contributing)
 7. [License](#license)
+8. [AWS Deployment](#aws-deployment)
 
 
 # Introduction
@@ -111,7 +112,7 @@ Ensure you have the following installed:
 | GET    | `/user/signout`                          | User Sign Out                      |
 
 
-## Contributing
+# Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -130,7 +131,20 @@ Contributions are welcome! Please follow these steps:
    ```
 5. **Open a pull request**
 
+Here's the updated AWS deployment info for your README:  
 
-   
+---
+
+# AWS Deployment  
+
+Our application is successfully deployed on AWS. You can access it here:  
+
+- **Frontend (React) URL**: [https://your-cloudfront-url.com](http://todo-app-mern.s3-website.ap-south-1.amazonaws.com/)
+
+The frontend is hosted on **AWS S3 + CloudFront**, and the backend is deployed on **AWS EC2**.  
+
+---
+
+
 
   
