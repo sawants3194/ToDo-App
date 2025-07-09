@@ -67,7 +67,7 @@ process.on("SIGINT", async () => {
 const port = config.app.port;
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => {
+  app.listen(port, '0.0.0.0', () => {
     console.log(`🚀 Servers is running on port ${port}`);
   });
 }
