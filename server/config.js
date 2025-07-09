@@ -5,7 +5,7 @@ const isDevelopment = process.env.NODE_ENV === "development";
 
 const config = {
     app:{
-        port: process.env.PORT || 5000,
+        port: process.env.PORT,
         secret: process.env.SECRET || 'defaultsecret'
     },
     database:{
