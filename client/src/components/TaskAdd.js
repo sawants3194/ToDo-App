@@ -3,7 +3,8 @@ import {  useHistory } from 'react-router-dom';
 import { API } from '../Backend';
 import Base from '../core/Base';
 import { isAuthenticated } from '../auth/helper';
-
+import '../styles.css';
+ 
 const TaskAdd = () => {
     const history = useHistory(); // Using useHistory instead of useNavigate
 
