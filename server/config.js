@@ -12,7 +12,7 @@ const config = {
         uri_test: process.env.uri_test,
         uri_dev:isDevelopment
         ? "mongodb://localhost:27017/todo-app"  // Local DB for development
-        : process.env.MONGO_URI,  // Cloud DB for production
+        : process.env.MONGO_URI,  // Cloud DB for production  MONGO_URI=production
     },
     email:{
         from: process.env.FROM_EMAIL,
