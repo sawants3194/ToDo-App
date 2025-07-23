@@ -3,12 +3,13 @@ const Task = require('../models/task')
 var ObjectId = require('mongodb').ObjectId;
 exports.createTask = async (req, res) => {
     const { userId } = req.params;
-    const { title, description, state } = req.body;
+    const { title, description, state, taskDate  } = req.body;
     try {
         const todo = new Task({
             title,
             description,
             state,
+            taskDate ,
             user: userId,
         });
         await todo.save();
@@ -118,30 +119,38 @@ exports.deleteTask = async (req, res) => {
 }
 
 exports.getAllTasksByUserId = async (req, res) => {
-    try { 
-        const userId = req.params.userId;
-        const { page = 1, limit = 5, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
+   try {
+    const userId = req.params.userId;
+    const { page = 1, limit = 5, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
 
-        const skipCount = (page - 1) * limit;
+    const skipCount = (page - 1) * limit;
 
-        const sortOptions = {
-            [sortBy]: sortOrder === 'asc' ? 1 : -1,
-        };
+    const sortOptions = {
+      [sortBy]: sortOrder === 'asc' ? 1 : -1,
+    };
 
-        const totalTasksCount = await Task.countDocuments({ user: userId });
+    const totalTasksCount = await Task.countDocuments({ user: userId });
+    const totalPages = Math.ceil(totalTasksCount / limit);
 
-        const totalPages = Math.ceil(totalTasksCount / limit);
-        const tasks = await Task.find({ user: userId })
-            .sort(sortOptions)
-            .skip(skipCount)
-            .limit(limit);
+    const tasks = await Task.find({ user: userId })
+      .sort(sortOptions)
+      .skip(skipCount)
+      .limit(Number(limit)); // Ensure limit is numeric
 
-        res.json({ tasks, totalPages });
-    } catch (error) {
-        console.error('Failed to fetch tasks:', error);
-        res.status(500).json({ error: 'Failed to fetch tasks' });
-    }
-  
+    // Grouping logic
+    const groupedTasks = {};
+    tasks.forEach(task => {
+      const dateKey = new Date(task.createdAt).toISOString().split('T')[0];
+      if (!groupedTasks[dateKey]) groupedTasks[dateKey] = [];
+      groupedTasks[dateKey].push(task);
+    });
+
+    res.json({ groupedTasks, totalPages });
+
+  } catch (error) {
+    console.error('Failed to fetch tasks:', error);
+    res.status(500).json({ error: 'Failed to fetch tasks' });
+  }
 }
  
 exports.getTaskById = async (req, res) => {

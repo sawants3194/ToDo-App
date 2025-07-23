@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import {  useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { API } from '../Backend';
 import Base from '../core/Base';
 import { isAuthenticated } from '../auth/helper';
 import '../styles.css';
- 
+
 const TaskAdd = () => {
     const history = useHistory(); // Using useHistory instead of useNavigate
 
-    const {user , token} = isAuthenticated();
+    const { user, token } = isAuthenticated();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [taskDate, setTaskDate] = useState('');
     const [state, setState] = useState('active');
     const [error, setError] = useState(null);  // To handle error state
 
@@ -27,6 +28,7 @@ const TaskAdd = () => {
             title,
             description,
             state,
+            taskDate
         };
 
         // Make sure userId exists before sending request
@@ -68,30 +70,36 @@ const TaskAdd = () => {
 
     return (
         <Base>
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-                <textarea
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                />
-                <select value={state} onChange={(e) => setState(e.target.value)}>
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
-                </select>
-                <button type="submit">Add Task</button>
-            </form>
+            <div>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                    />
+                    <textarea
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="date"
+                        name="taskDate"
+                        onChange={e => setTaskDate(e.target.value)}
+                        required
+                    />
+                    <select value={state} onChange={(e) => setState(e.target.value)}>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button type="submit">Add Task</button>
+                </form>
 
-            {error && <p className="error-message">{error}</p>} {/* Display error message if any */}
-        </div>
+                {error && <p className="error-message">{error}</p>} {/* Display error message if any */}
+            </div>
         </Base>
     );
 };

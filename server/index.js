@@ -27,7 +27,7 @@ mongoose
   .connect(db_uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
+  })  
   .then(() => console.log(`✅ Connected to database (${process.env.NODE_ENV} ${db_uri} environment)`))
   .catch((error) => {
     console.error("❌ Database connection error:", error);

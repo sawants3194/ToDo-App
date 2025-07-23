@@ -16,6 +16,10 @@ var taskSchema = new mongoose.Schema({
     type: String,
     enum: ['active', 'completed']
   },
+  taskDate: {
+    type: Date,
+    required: true
+  },
   user: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User'  
