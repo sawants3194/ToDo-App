@@ -69,7 +69,10 @@ const TaskAdd = () => {
     };
 
     return (
-        <Base>
+        <Base
+            title='Task Add'
+            description='Create a Task'
+        >
             <div>
                 <form onSubmit={handleSubmit}>
                     <input
@@ -91,11 +94,16 @@ const TaskAdd = () => {
                         onChange={e => setTaskDate(e.target.value)}
                         required
                     />
-                    <select value={state} onChange={(e) => setState(e.target.value)}>
+                    <select
+                        className="task-state-select"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                    >
                         <option value="active">Active</option>
                         <option value="completed">Completed</option>
                     </select>
-                    <button type="submit">Add Task</button>
+
+                    <button className='btn' type="submit">Add Task</button>
                 </form>
 
                 {error && <p className="error-message">{error}</p>} {/* Display error message if any */}

@@ -120,7 +120,10 @@ const TaskScreen = () => {
 
     return (
         <Suspense fallback={<div>loading...</div>}>
-            <Base>
+            <Base
+                title='List'
+                description='List of Tasks'
+            >
                 <div>
                     <label htmlFor="filter">Filter:</label>
                     <select id="filter" value={filter} onChange={handleFilterChange}>
@@ -165,9 +168,11 @@ const TaskScreen = () => {
                         >
                             Previous
                         </button>
+
                         <span className="page-info">
                             Page {page} of {totalPages}
                         </span>
+
                         <button
                             className="pagination-button"
                             onClick={handleNextPage}
@@ -176,6 +181,7 @@ const TaskScreen = () => {
                             Next
                         </button>
                     </div>
+
                 </div>
             </Base>
         </Suspense>

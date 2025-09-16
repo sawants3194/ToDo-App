@@ -32,7 +32,7 @@ mongoose
   .catch((error) => {
     console.error("❌ Database connection error:", error);
     process.exit(1);
-  });
+  }); 
 
 // Middleware
 app.use(bodyParser.json());
