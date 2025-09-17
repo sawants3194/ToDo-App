@@ -11,7 +11,7 @@ const TaskDetails = ({ match }) => {
     const [task, setTask] = useState(null);
     const [loading, setLoading] = useState(true); // Added loading state
 
-    const {  token } = isAuthenticated();
+    const { token } = isAuthenticated();
 
     useEffect(() => {
         const fetchTaskDetails = async () => {
@@ -34,41 +34,49 @@ const TaskDetails = ({ match }) => {
         fetchTaskDetails();
     }, [taskId, token]);
 
-    
+
 
     const handleEditTask = () => {
         history.push(`/edit-task/${taskId}`);
     };
 
-    
+
 
     return (
-        <Base>
-            <div>
+        <Base
+            title='Details'
+            description='Task Details'
+        >
+            <div className="task-details">
                 <h3>Task Details:</h3>
                 {loading ? (
                     <p>Loading task details...</p>
                 ) : task ? (
-                    <div className="task-tile">
+                    <div className="task-detail-card">
                         <h4>{task.title}</h4>
                         <p>{task.description}</p>
                         {/* <label>
-                            <input
-                                type="checkbox"
-                                checked={task.state === 'completed'}
-                                onChange={handleTaskCompletionToggle}
-                            />
-                            Mark as {task.state === 'completed' ? 'Active' : 'Completed'}
-                        </label> */}
-                        <button onClick={handleEditTask}>Edit Task</button>
+          <input
+              type="checkbox"
+              checked={task.state === 'completed'}
+              onChange={handleTaskCompletionToggle}
+          />
+          Mark as {task.state === 'completed' ? 'Active' : 'Completed'}
+      </label> */}
+                        <button className="btn btn-primary" onClick={handleEditTask}>
+                            Edit Task
+                        </button>
                         {/* <button onClick={handleDeleteTask}>Delete Task</button> */}
-                        <p style={{ color: "black", marginTop: "10px" }}>If you want to delete a task, 
-                            just mark it as completed in the Edit Task button.</p>
-                    </div> 
+                        <p className="delete-note">
+                            If you want to delete a task, just mark it as{" "}
+                            <strong>completed</strong> in the Edit Task button.
+                        </p>
+                    </div>
                 ) : (
                     <p>Task not found.</p>
                 )}
             </div>
+
         </Base>
     );
 };

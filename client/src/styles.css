@@ -196,3 +196,92 @@ select:focus {
   font-weight: 500;
   color: #333;
 }
+
+
+/* task list */
+.task-tiles {
+  margin-top: 30px;
+}
+
+.task-tiles h3 {
+  font-size: 1.1rem;
+  margin: 20px 0 10px;
+  color: #444;
+  font-weight: 600;
+  position: relative;
+  padding-left: 12px;
+}
+
+.task-tiles h3::before {
+  position: absolute;
+  left: -5px;
+  top: 0;
+  font-size: 1.2rem;
+}
+
+.task-tile {
+  background: linear-gradient(145deg, #f9f9f9, #ffffff);
+  border: 1px solid #e6e6e6;
+  border-left: 5px solid #4e9ef1;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.task-tile:hover {
+  background: #f1f9ff;
+  border-left-color: #1d4b87;
+  transform: translateX(5px);
+}
+
+.task-tile h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+}
+
+/* Task Details */
+.task-details {
+  margin-top: 25px;
+}
+
+.task-details h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.task-detail-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-left: 5px solid #4e9ef1;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.task-detail-card h4 {
+  margin: 0 0 10px;
+  color: #222;
+  font-size: 1.1rem;
+}
+
+.task-detail-card p {
+  margin: 6px 0;
+  color: #555;
+}
+
+.task-detail-card .btn {
+  margin-top: 12px;
+}
+
+.delete-note {
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 15px;
+  font-style: italic;
+}
