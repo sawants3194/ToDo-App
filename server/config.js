@@ -9,7 +9,7 @@ const config = {
         secret: process.env.SECRET || 'defaultsecret'
     },
     database:{
-        uri_test: process.env.uri_test,
+        uri_test: process.env.MONGO_URI_TEST,
         uri_dev:isDevelopment
         ? "mongodb://localhost:27017/todo-app"  // Local DB for development
         : process.env.MONGO_URI,  // Cloud DB for production  MONGO_URI=production

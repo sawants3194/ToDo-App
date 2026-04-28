@@ -8,6 +8,7 @@
 5. [API Endpoints](#api-endpoints)
 6. [Contributing](#contributing)
 7. [License](#license)
+7. [Testing](#testing)
 8. [AWS Deployment](#aws-deployment)
 
 
@@ -132,7 +133,23 @@ Contributions are welcome! Please follow these steps:
    ```
 5. **Open a pull request**
 
+
+
+
+## Testing
+Make sure server is stopped.
+**Set the environment**:
+ ```bash
+   NODE_ENV=test
+ ```
+**Run Test Cases**:
+ ```bash
+   set NODE_ENV=test && npx jest --runInBand --detectOpenHandles
+ ```
+
+
 Here's the updated AWS deployment info for your README:  
+
 
 ---
 

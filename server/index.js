@@ -15,30 +15,27 @@ const userRoute = require("./router/userRouter");
 
 // Initialize Express app
 const app = express();
-let db_uri;
 
 // Load environment variables based on the environment
-db_uri = process.env.NODE_ENV === 'test' ? config.database.uri_test : config.database.uri_dev;
-
-
+const db_uri = process.env.NODE_ENV === 'test' ? config.database.uri_test : config.database.uri_dev;
 
 // Connect to MongoDB
-mongoose
-  .connect(db_uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })  
-  .then(() => console.log(`✅ Connected to database (${process.env.NODE_ENV} ${db_uri} environment)`))
-  .catch((error) => {
-    console.error("❌ Database connection error:", error);
+// Connect DB (separate function)
+const connectDB = async () => {
+  try {
+    await mongoose.connect(db_uri);
+    console.log(`Connected to DB (${process.env.NODE_ENV})`);
+  } catch (error) {
+    console.log("DB connections error:", error);
     process.exit(1);
-  }); 
-
+  }
+};
+ 
 // Middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
-
+ 
 app.use('/api/v1', taskRoute)
 app.use('/api/v1', userRoute)
  
@@ -65,9 +62,9 @@ process.on("SIGINT", async () => {
 const port = config.app.port;
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, '0.0.0.0', () => {
+  app.listen(port,() => {
     console.log(`🚀 Servers is running on port ${port}`);
   });
 }
 
-module.exports = app;
+module.exports = {app, connectDB};

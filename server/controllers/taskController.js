@@ -93,30 +93,30 @@ exports.updateTaskState = async (req, res) => {
 
 }
 
-exports.deleteTask = async (req, res) => {
-    try {
-        const { tasks } = req.body; // Array of task IDs passed in the request body
+// exports.deleteTask = async (req, res) => {
+//     try {
+//         const { tasks } = req.body; // Array of task IDs passed in the request body
 
-        if (!tasks || tasks.length === 0) {
-            return res.status(400).json({ message: 'No tasks to delete' });
-        }
+//         if (!tasks || tasks.length === 0) {
+//             return res.status(400).json({ message: 'No tasks to delete' });
+//         }
 
-        // Remove tasks by their IDs if they are completed
-        const deletedTasks = await Task.deleteMany({
-            _id: { $in: tasks },
-            state: 'completed'
-        });
+//         // Remove tasks by their IDs if they are completed
+//         const deletedTasks = await Task.deleteMany({
+//             _id: { $in: tasks },
+//             state: 'completed'
+//         });
 
-        if (deletedTasks.deletedCount === 0) {
-            return res.status(404).json({ message: 'No completed tasks found to delete' });
-        }
+//         if (deletedTasks.deletedCount === 0) {
+//             return res.status(404).json({ message: 'No completed tasks found to delete' });
+//         }
 
-        res.status(200).json({ message: `${deletedTasks.deletedCount} completed tasks removed successfully.` });
-    } catch (error) {
-        console.error('Error removing tasks:', error);
-        res.status(500).json({ message: 'Failed to remove completed tasks', error: error.message });
-    }
-}
+//         res.status(200).json({ message: `${deletedTasks.deletedCount} completed tasks removed successfully.` });
+//     } catch (error) {
+//         console.error('Error removing tasks:', error);
+//         res.status(500).json({ message: 'Failed to remove completed tasks', error: error.message });
+//     }
+// }
 
 exports.getAllTasksByUserId = async (req, res) => {
    try {
