@@ -11,9 +11,9 @@ const config = {
     database:{
         uri_test: process.env.MONGO_URI_TEST,
         uri_dev:isDevelopment
-        ? "mongodb://localhost:27017/todo-app"  // Local DB for development
+        ? process.env.MONGO_URI  // Local DB for development
         : process.env.MONGO_URI,  // Cloud DB for production  MONGO_URI=production
-    },
+    }, 
     email:{
         from: process.env.FROM_EMAIL,
         sendgridApiKey: process.env.SENDGRID_API_KEY

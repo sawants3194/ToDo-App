@@ -30,15 +30,15 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
- 
+
 // Middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
- 
+
 app.use('/api/v1', taskRoute)
 app.use('/api/v1', userRoute)
- 
+
 
 // Handle unknown routes
 app.use((req, res) => {
@@ -62,9 +62,12 @@ process.on("SIGINT", async () => {
 const port = config.app.port;
 
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(port,() => {
-    console.log(`🚀 Servers is running on port ${port}`);
-  });
+  connectDB().then(() => {
+    app.listen(port, () => {
+      console.log(`🚀 Server is running on port ${port}`);
+    });
+  })
+
 }
 
-module.exports = {app, connectDB};
+module.exports = { app, connectDB };
