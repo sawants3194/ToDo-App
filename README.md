@@ -11,12 +11,9 @@
 7. [Testing](#testing)
 8. [AWS Deployment](#aws-deployment)
 
+## Introduction
 
-# Introduction
-- Adding new tasks
-- Viewing All Tasks
-- Updating existing tasks
-- Deleting tasks
+ToDo App is a full-stack MERN application that allows users to manage daily tasks efficiently. Users can create an account, securely sign in, and perform CRUD operations on their tasks. The application supports task search, task status updates, and persistent storage using MongoDB.
 
 # Features
 - Create, Read, Update, and Delete Tasks
@@ -28,13 +25,15 @@
 - Frontend built with React and React Router
 
 # Technologies Used
-- MongoDB - NoSQL database for storing user data and tasks
-- Express - Backend web framework for building REST APIs
-- React - Frontend library for creating user interface
-- Node.js - JavaScript runtime environment
-- Mongoose - ODM for MongoDB
-- dotenv - Environment variables
-- Axios - HTTP client for API requests
+| Category       | Technology                    |
+| -------------- | ----------------------------- |
+| Frontend       | React.js, React Router, Axios |
+| Backend        | Node.js, Express.js           |
+| Database       | MongoDB, Mongoose             |
+| Authentication | JWT                           |
+| Testing        | Jest                          |
+| Tools          | Git, dotenv                   |
+
 
 # Installation
 
