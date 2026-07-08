@@ -63,11 +63,12 @@ const port = config.app.port;
 
 if (process.env.NODE_ENV !== 'test') {
   connectDB().then(() => {
+
     app.listen(port, () => {
       console.log(`🚀 Server is running on port ${port}`);
     });
   })
 
-}
+}  
 
 module.exports = { app, connectDB };

@@ -41,9 +41,10 @@
 <span style="font-size: 20px; font-weight: bold;">Prerequisites</span>
 Ensure you have the following installed:
 
-- Node.js (v14)
-- react-router-dom@6.11.2, react@18.2.0
-- MongoDB (Local instance or MongoDB Atlas)
+- Node.js v14.17.3 or later
+- npm v6.14.13 or later
+- MongoDB Community Server 8.0+ or MongoDB Atlas
+- Git
 
 <span style="font-size: 20px; font-weight: bold;">Step 1: Clone the Repository</span>
 1. **Clone the repository**:
